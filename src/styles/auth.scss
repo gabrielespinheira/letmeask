@@ -56,6 +56,10 @@
       font-family: 'Poppins', sans-serif;
     }
 
+    button + button {
+      margin-top: 16px;
+    }
+
     form {
       input {
         height: 50px;
@@ -63,6 +67,7 @@
         padding: 0 16px;
         background: #fff;
         border: 1px solid #a8a8b3;
+        outline: none;
       }
 
       button {
@@ -100,7 +105,11 @@
     border: 0;
     transition: filter 0.2s;
 
-    img {
+    &.github {
+      background: #000;
+    }
+
+    svg {
       margin-right: 8px;
     }
 

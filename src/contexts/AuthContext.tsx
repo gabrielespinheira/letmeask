@@ -11,6 +11,7 @@ type User = {
 type AuthContextType = {
   user: User | undefined
   signInWithGoogle: () => Promise<void>
+  signInWithGitHub: () => Promise<void>
 }
 
 type AuthContextProviderProps = {
@@ -64,8 +65,17 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     }
   }
 
+  async function signInWithGitHub() {
+    const provider = new firebase.auth.GithubAuthProvider()
+    provider.addScope('read:user')
+
+    const result = await auth.signInWithPopup(provider)
+
+    console.log(result)
+  }
+
   return (
-    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+    <AuthContext.Provider value={{ user, signInWithGoogle, signInWithGitHub }}>
       {children}
     </AuthContext.Provider>
   )
