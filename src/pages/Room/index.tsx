@@ -119,23 +119,29 @@ export function Room() {
                   key={question.id}
                   content={question.content}
                   author={question.author}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
                 >
-                  <button
-                    className={`like-button ${question.likeId ? 'liked' : ''}`}
-                    type="button"
-                    aria-label="Marcar como gostei"
-                    onClick={() =>
-                      handleLikeQuestion(question.id, question.likeId)
-                    }
-                  >
-                    {question.likeCount > 0 && (
-                      <span>{question.likeCount}</span>
-                    )}
-                    <FiThumbsUp
-                      color={question.likeId ? '#835afd' : '#737380'}
-                      size={20}
-                    />
-                  </button>
+                  {!question.isAnswered && (
+                    <button
+                      className={`like-button ${
+                        question.likeId ? 'liked' : ''
+                      }`}
+                      type="button"
+                      aria-label="Marcar como gostei"
+                      onClick={() =>
+                        handleLikeQuestion(question.id, question.likeId)
+                      }
+                    >
+                      {question.likeCount > 0 && (
+                        <span>{question.likeCount}</span>
+                      )}
+                      <FiThumbsUp
+                        color={question.likeId ? '#835afd' : '#737380'}
+                        size={20}
+                      />
+                    </button>
+                  )}
                 </Question>
               )
             })}

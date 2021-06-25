@@ -2,10 +2,21 @@
   background: #fefefe;
   border-radius: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+  border: 1px solid #f4f0ff;
   padding: 24px;
 
   & + .question {
     margin-top: 8px;
+  }
+
+  &.highlighted {
+    background: #f4f0ff;
+    border: 1px solid #835afd;
+  }
+
+  &.answered {
+    background: #fff;
+    opacity: 0.4;
   }
 
   p {
@@ -33,6 +44,11 @@
         color: #737380;
         font-size: 14px;
       }
+    }
+
+    > div {
+      display: flex;
+      gap: 16px;
     }
 
     button {

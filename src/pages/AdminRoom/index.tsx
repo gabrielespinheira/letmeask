@@ -1,5 +1,5 @@
 import { useHistory, useParams } from 'react-router-dom'
-import { FiTrash } from 'react-icons/fi'
+import { FiTrash, FiCheckCircle, FiMessageSquare } from 'react-icons/fi'
 
 import { database } from 'services/firebase'
 import { useRoom } from 'hooks/useRoom'
@@ -30,7 +30,47 @@ export function AdminRoom() {
     history.push('/')
   }
 
-  async function handleDeleteQuestion(questionId: string) {
+  async function handleQuestionAnswered(questionId: string) {
+    const roomRef = await database
+      .ref(`rooms/${roomId}/questions/${questionId}`)
+      .get()
+
+    if (roomRef.val().isAnswered) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+        isAnswered: false,
+      })
+
+      return
+    } else {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+        isAnswered: true,
+      })
+
+      return
+    }
+  }
+
+  async function handleQuestionHighlight(questionId: string) {
+    const roomRef = await database
+      .ref(`rooms/${roomId}/questions/${questionId}`)
+      .get()
+
+    if (roomRef.val().isHighlighted) {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+        isHighlighted: false,
+      })
+
+      return
+    } else {
+      await database.ref(`rooms/${roomId}/questions/${questionId}`).update({
+        isHighlighted: true,
+      })
+
+      return
+    }
+  }
+
+  async function handleQuestionDelete(questionId: string) {
     if (window.confirm('Tem certeza que você deseja excluir esta pergunta?')) {
       await database.ref(`rooms/${roomId}/questions/${questionId}`).remove()
     }
@@ -64,15 +104,37 @@ export function AdminRoom() {
                   key={question.id}
                   content={question.content}
                   author={question.author}
+                  isAnswered={question.isAnswered}
+                  isHighlighted={question.isHighlighted}
                 >
                   <button
                     type="button"
-                    onClick={() => handleDeleteQuestion(question.id)}
+                    title="Marcar como respondida"
+                    onClick={() => handleQuestionAnswered(question.id)}
                   >
-                    <FiTrash
-                      color={question.likeId ? '#835afd' : '#737380'}
+                    <FiCheckCircle
+                      color={question.isAnswered ? '#835afd' : '#737380'}
                       size={20}
                     />
+                  </button>
+
+                  <button
+                    type="button"
+                    title="Destacar pergunta"
+                    onClick={() => handleQuestionHighlight(question.id)}
+                  >
+                    <FiMessageSquare
+                      color={question.isHighlighted ? '#835afd' : '#737380'}
+                      size={20}
+                    />
+                  </button>
+
+                  <button
+                    type="button"
+                    title="Excluir pergunta"
+                    onClick={() => handleQuestionDelete(question.id)}
+                  >
+                    <FiTrash color="#737380" size={20} />
                   </button>
                 </Question>
               )
